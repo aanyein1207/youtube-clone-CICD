@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/hlaingminpaing/youtube-clone-CICD.git'
+                git branch: 'main', url: 'https://github.com/aanyein1207/youtube-clone-CICD.git'
             }
         }
         stage('Sonarqube Analysis') {
@@ -55,7 +55,7 @@ pipeline {
                 script {
                     def buildNumber = env.BUILD_NUMBER ?: '0'
                     env.IMAGE_TAG = "v${params.MAJOR_VERSION}.${buildNumber}"
-                    echo "Docker image will be tagged as: hlaingminpaing/youtube-clone:${env.IMAGE_TAG}"
+                    echo "Docker image will be tagged as: aanyein1207/youtube-clone:${env.IMAGE_TAG}"
                 }
             }
         }
@@ -67,23 +67,23 @@ pipeline {
                         // Build the Docker image
                         sh "docker build -t youtube-clone ."
                         // Tag the image with the dynamically fetched version
-                        sh "docker tag youtube-clone hlaingminpaing/youtube-clone:${env.IMAGE_TAG}"
+                        sh "docker tag youtube-clone aanyein1207/youtube-clone:${env.IMAGE_TAG}"
                         // Push the tagged image
-                        sh "docker push hlaingminpaing/youtube-clone:${env.IMAGE_TAG}"
+                        sh "docker push aanyein1207/youtube-clone:${env.IMAGE_TAG}"
                     }
                 }
             }
             post {
                 always {
                     // Clean up Docker images to save disk space
-                    sh "docker rmi youtube-clone hlaingminpaing/youtube-clone:${env.IMAGE_TAG} || true"
+                    sh "docker rmi youtube-clone aanyein1207/youtube-clone:${env.IMAGE_TAG} || true"
                 }
             }
         }
         
         stage('TRIVY') {
             steps {
-                sh "trivy image hlaingminpaing/youtube-clone:${env.IMAGE_TAG} > trivyimage.txt"
+                sh "trivy image aanyein1207/youtube-clone:${env.IMAGE_TAG} > trivyimage.txt"
             }
         }
     }

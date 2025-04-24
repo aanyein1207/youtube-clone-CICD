@@ -13,9 +13,9 @@ pipeline {
     environment {
         SCANNER_HOME = tool 'sonarqube-scanner'
         TRIVY_HOME = '/usr/bin'
-        REPO_URL = 'https://github.com/hlaingminpaing/youtube-clone-CICD.git' 
+        REPO_URL = 'https://github.com/aanyein1207/youtube-clone-CICD.git' 
         REPO_BRANCH = 'main'
-        DOCKER_IMAGE_NAME = 'hlaingminpaing/youtube-clone'
+        DOCKER_IMAGE_NAME = 'aanyein1207/youtube-clone'
         SONAR_PROJECT_NAME = 'youtube-cicd'
         SONAR_PROJECT_KEY = 'youtube-cicd'
         DOCKER_CREDENTIALS_ID = 'dockerhub'
@@ -111,16 +111,16 @@ pipeline {
                         // Build the Docker image
                         sh "docker build -t youtube-clone ."
                         // Tag the image with the dynamically fetched version
-                        sh "docker tag youtube-clone hlaingminpaing/youtube-clone:${env.IMAGE_TAG}"
+                        sh "docker tag youtube-clone aanyein1207/youtube-clone:${env.IMAGE_TAG}"
                         // Push the tagged image
-                        sh "docker push hlaingminpaing/youtube-clone:${env.IMAGE_TAG}"
+                        sh "docker push aanyein1207/youtube-clone:${env.IMAGE_TAG}"
                     }
                 }
             }
             post {
                 always {
                     // Clean up Docker images to save disk space
-                    sh "docker rmi youtube-clone hlaingminpaing/youtube-clone:${env.IMAGE_TAG} || true"
+                    sh "docker rmi youtube-clone aanyein1207/youtube-clone:${env.IMAGE_TAG} || true"
                 }
             }
         }
@@ -154,7 +154,7 @@ pipeline {
                                     // Optional: print version to verify AWS credentials are working
                                     sh 'kubectl version'
                                     // Update image tag in deployment file (optional)
-                                    sh "sed -i 's|image: hlaingminpaing/youtube-clone:.*|image: hlaingminpaing/youtube-clone:${env.IMAGE_TAG}|' deployment.yml"
+                                    sh "sed -i 's|image: aanyein1207/youtube-clone:.*|image: aanyein1207/youtube-clone:${env.IMAGE_TAG}|' deployment.yml"
                                     // Deploy
                                     sh 'kubectl apply -f deployment.yml'
                                     sh 'kubectl apply -f service.yml'
@@ -175,7 +175,7 @@ pipeline {
             body: "Project: ${env.JOB_NAME}<br/>" +
                 "Build Number: ${env.BUILD_NUMBER}<br/>" +
                 "URL: ${env.BUILD_URL}<br/>",
-            to: 'hlaingminpaing.ygn@gmail.com',                              
+            to: 'nyeinnyein1206@gmail.com',                              
             attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
         }
     }
