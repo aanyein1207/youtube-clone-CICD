@@ -109,9 +109,9 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
                         // Build the Docker image
-                        sh "docker build -t youtube-clone ."
+                        sh "docker build -t jenkin_repo ."
                         // Tag the image with the dynamically fetched version
-                        sh "docker tag youtube-clone ayeayenyein/jenkin_repo:${env.IMAGE_TAG}"
+                        sh "docker tag jenkin_repo ayeayenyein/jenkin_repo:${env.IMAGE_TAG}"
                         // Push the tagged image
                         sh "docker push ayeayenyein/jenkin_repo:${env.IMAGE_TAG}"
                     }
@@ -120,7 +120,7 @@ pipeline {
             post {
                 always {
                     // Clean up Docker images to save disk space
-                    sh "docker rmi youtube-clone ayeayenyein/jenkin_repo:${env.IMAGE_TAG} || true"
+                    sh "docker rmi jenkin_repo ayeayenyein/jenkin_repo:${env.IMAGE_TAG} || true"
                 }
             }
         }
