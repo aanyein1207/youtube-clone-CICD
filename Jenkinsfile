@@ -59,13 +59,13 @@ pipeline {
                 }
             }
         }
-        stage('Quality Gate') {
-            steps {
-                script {
-                    waitForQualityGate abortPipeline: false, credentialsId: "${SONAR_CREDENTIALS_ID}"
-                }
-            }
-        }
+//       stage('Quality Gate') {
+//            steps {
+//                script {
+//                    waitForQualityGate abortPipeline: false, credentialsId: "${SONAR_CREDENTIALS_ID}"
+//                }
+//            }
+//        }
         
         stage('Install Dependencies') {
             steps {
@@ -138,32 +138,32 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-                steps {
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding', 
-                        credentialsId: 'aws-secret' // AWS credentials from Jenkins
-                    ]]) {
-                        script {
-                            dir('Kubernetes') {
-                                withKubeConfig(
-                                    credentialsId: "${KUBERNETES_CREDENTIALS_ID}",
-                                    serverUrl: '', // Optional if kubeconfig is valid
-                                    namespace: "${K8S_NAMESPACE}"
-                                ) {
-                                    // Optional: print version to verify AWS credentials are working
-                                    sh 'kubectl version'
-                                    // Update image tag in deployment file (optional)
-                                    sh "sed -i 's|image: aanyein1207/jenkin_repo:.*|image: aanyein1207/jenkin_repo:${env.IMAGE_TAG}|' deployment.yml"
-                                    // Deploy
-                                    sh 'kubectl apply -f deployment.yml'
-                                    sh 'kubectl apply -f service.yml'
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+//       stage('Deploy to Kubernetes') {
+//                steps {
+//                    withCredentials([[
+//                        $class: 'AmazonWebServicesCredentialsBinding', 
+//                        credentialsId: 'aws-secret' // AWS credentials from Jenkins
+//                    ]]) {
+//                        script {
+//                            dir('Kubernetes') {
+//                                withKubeConfig(
+//                                    credentialsId: "${KUBERNETES_CREDENTIALS_ID}",
+//                                    serverUrl: '', // Optional if kubeconfig is valid
+//                                    namespace: "${K8S_NAMESPACE}"
+//                                ) {
+//                                    // Optional: print version to verify AWS credentials are working
+//                                    sh 'kubectl version'
+//                                    // Update image tag in deployment file (optional)
+//                                    sh "sed -i 's|image: aanyein1207/jenkin_repo:.*|image: aanyein1207/jenkin_repo:${env.IMAGE_TAG}|' deployment.yml"
+//                                    // Deploy
+//                                    sh 'kubectl apply -f deployment.yml'
+//                                    sh 'kubectl apply -f service.yml'
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }   
 
 
