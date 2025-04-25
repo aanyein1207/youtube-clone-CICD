@@ -109,9 +109,9 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
                         // Build the Docker image
-                        sh "docker build -t jenkin_repo ."
+                        sh "docker build -t youtube-clone ."
                         // Tag the image with the dynamically fetched version
-                        sh "docker tag jenkin_repo ayeayenyein/jenkin_repo:${env.IMAGE_TAG}"
+                        sh "docker tag youtube-clone ayeayenyein/jenkin_repo:${env.IMAGE_TAG}"
                         // Push the tagged image
                         sh "docker push ayeayenyein/jenkin_repo:${env.IMAGE_TAG}"
                     }
@@ -120,7 +120,7 @@ pipeline {
             post {
                 always {
                     // Clean up Docker images to save disk space
-                    sh "docker rmi jenkin_repo ayeayenyein/jenkin_repo:${env.IMAGE_TAG} || true"
+                    sh "docker rmi youtube-clone ayeayenyein/jenkin_repo:${env.IMAGE_TAG} || true"
                 }
             }
         }
@@ -154,7 +154,7 @@ pipeline {
                                     // Optional: print version to verify AWS credentials are working
                                     sh 'kubectl version'
                                     // Update image tag in deployment file (optional)
-                                    sh "sed -i 's|image: aanyein1207/youtube-clone:.*|image: aanyein1207/youtube-clone:${env.IMAGE_TAG}|' deployment.yml"
+                                    sh "sed -i 's|image: aanyein1207/jenkin_repo:.*|image: aanyein1207/jenkin_repo:${env.IMAGE_TAG}|' deployment.yml"
                                     // Deploy
                                     sh 'kubectl apply -f deployment.yml'
                                     sh 'kubectl apply -f service.yml'
